@@ -100,8 +100,8 @@ class Inventario:
         """
         # TODO: recorrer self.productos y guardar los datos en formato JSON
         try:
-            with open(self.nombre_fichero, "w", encoding="UTF-8") as e:
-                json.dump([t.__dict__ for t in self.productos], e , indent=4, ensure_ascii=False)
+            with open(self.nombre_fichero, "w", encoding="UTF-8") as f:
+                json.dump([t.__dict__ for t in self.productos], f , ensure_ascii=False, indent=4,  default=str)
                 print("Datos cargados correctamente.")
 
         except Exception as e:
@@ -141,7 +141,7 @@ class Inventario:
                 return None
         
 
-    def modificar(self, codigo, nombre=None, precio=None, stock=None):
+    def modificar(self, codigo, nombreP=None, precioP=None, stockP=None):
         """
         Permite modificar los datos de un producto existente.
         """
@@ -150,42 +150,57 @@ class Inventario:
         for p in self.productos:
             if p.codigo.lower() == codigo.lower():
 
-                if nombre:
-                    nombreNuevo = nombre
-                if precio:
-                    precioNuevo = precio
-                if stock:
-                    nuevoStock = stock
+                prod = p
 
-            productoModificado = Producto(codigo, nombre = nombreNuevo or nombre, precio = precioNuevo or precio, stock = nuevoStock or stock)
+                prov = p.proveedor
 
-            return productoModificado
-        
-        else:
-            print("ERROR: No existe ningún producto con ese código")
-                
-        
+                if nombreP:
+                    nombreNuevo = nombreP
+                if precioP:
+                    precioNuevo = precioP
+                if stockP:
+                    nuevoStock = stockP
+
+                productoModificado = Producto(codigo, nombre = nombreNuevo or nombreP, precio = precioNuevo or precioP, stock = nuevoStock or stockP, proveedor= prov)
+
+        prod = productoModificado
+
+        print("Producto actualizado con éxito.")
+        print(prod)
 
     def eliminar(self, codigo):
         """
         Elimina un producto del inventario según su código.
         """
         # TODO: eliminar el producto de la lista
-        pass
+
+        self.productos = [p for p in self.productos if p.codigo.lower() != codigo.lower()]
+        
 
     def valor_total(self):
         """
         Calcula y devuelve el valor total del inventario (precio * stock).
         """
         # TODO: devolver la suma total del valor del stock
-        pass
 
+        valor_total = 0
+
+        for p in self.productos:
+            valor_total += p.stock * p.precio
+
+        print(f"El valor total del inventario es: {valor_total}")
+
+        return valor_total
+        
     def mostrar_por_proveedor(self, nombre_proveedor):
         """
         Muestra todos los productos de un proveedor determinado.
         Si no existen productos de ese proveedor, mostrar un mensaje.
         """
         # TODO: filtrar y mostrar los productos de un proveedor concreto
+
+        for p in self.productos:
+            if p.proveedor["nombre"].lower() == nombre_proveedor.lower()
         pass
 
 
@@ -252,15 +267,31 @@ def main():
             
 
         elif opcion == 4:
-            #cod = input("Introduzca el código del producto a buscar: ")
-            #nombre = input("Nombre ")
+            cod = input("Introduzca el código del producto a buscar: ")
+            print("DEJAR VACIO PARA NO ACTUALIZAR")
+            nombre = input("Nombre: ")
+            precio = float(input("Precio: "))
+            stock = int(input("Stock: "))
+
+            inventario.modificar(cod, nombre, precio, stock)
             
 
-            pass
+            
         elif opcion == 5:
-            pass
+
+            cod = input("Introduzca el código del producto a eliminar: ")
+
+            if inventario.buscar(cod):
+                inventario.eliminar(cod)
+                print("Producto eliminado con éxito")
+            else:
+                print("No existe ningún producto con ese códidgo")
+            
+
+            
         elif opcion == 6:
-            pass
+            inventario.valor_total()
+            
         elif opcion == 7:
             pass
         elif opcion == 8:
