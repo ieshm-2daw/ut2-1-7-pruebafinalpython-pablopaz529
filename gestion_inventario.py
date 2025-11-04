@@ -141,7 +141,7 @@ class Inventario:
                 return None
         
 
-    def modificar(self, codigo, nombreP=None, precioP=None, stockP=None):
+    def modificar(self, codigo, nombre=None, precio=None, stock=None):
         """
         Permite modificar los datos de un producto existente.
         """
@@ -154,14 +154,14 @@ class Inventario:
 
                 prov = p.proveedor
 
-                if nombreP:
-                    nombreNuevo = nombreP
-                if precioP:
-                    precioNuevo = precioP
-                if stockP:
-                    nuevoStock = stockP
+                if nombre:
+                    p.nombre = nombre
+                if precio:
+                    p.precio = precio
+                if stock:
+                    p.stock = stock
 
-                productoModificado = Producto(codigo, nombre = nombreNuevo or nombreP, precio = precioNuevo or precioP, stock = nuevoStock or stockP, proveedor= prov)
+                productoModificado = Producto(codigo, nombre = nombre or nombre, precio = precio or precio, stock = stock or stock, proveedor= prov)
 
         prod = productoModificado
 
@@ -199,9 +199,11 @@ class Inventario:
         """
         # TODO: filtrar y mostrar los productos de un proveedor concreto
 
-        for p in self.productos:
-            if p.proveedor["nombre"].lower() == nombre_proveedor.lower()
-        pass
+        res = [p for p in self.productos if p.proveedor["nombre"].lower() == nombre_proveedor.lower()]
+
+        print(res)
+
+        
 
 
 # ======================================================
@@ -293,7 +295,11 @@ def main():
             inventario.valor_total()
             
         elif opcion == 7:
-            pass
+
+            nombre_proveedor= input("Introduzca el nombre del proveedor: ")
+
+            inventario.mostrar_por_proveedor(nombre_proveedor)
+            
         elif opcion == 8:
 
             inventario.guardar()
