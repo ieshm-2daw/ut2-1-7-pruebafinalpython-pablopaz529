@@ -133,8 +133,9 @@ class Inventario:
         Devuelve el producto con el código indicado, o None si no existe.
         """
         # TODO: buscar un producto por código
+
         for p in self.productos:
-            if p.codigo.lower() == codigo.lower:
+            if p.codigo.lower() == codigo.lower():
                 return p
             else:
                 return None
@@ -148,7 +149,7 @@ class Inventario:
 
         for p in self.productos:
             if p.codigo.lower() == codigo.lower():
-                
+
                 if nombre:
                     nombreNuevo = nombre
                 if precio:
@@ -246,9 +247,9 @@ def main():
             
         elif opcion == 3:
 
-            #cod = input("Introduzca el código del producto a buscar: ")
-            #inventario.buscar(cod)
-            pass
+            cod = input("Introduzca el código del producto a buscar: ")
+            print(inventario.buscar(cod))
+            
 
         elif opcion == 4:
             #cod = input("Introduzca el código del producto a buscar: ")
